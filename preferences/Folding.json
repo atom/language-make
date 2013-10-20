@@ -1,0 +1,8 @@
+{
+  "name": "Folding",
+  "scope": "source.antlr",
+  "settings": {
+    "foldingStartMarker": "^(((override\\s*)?define)|ifdef|ifndef|ifeq|ifneq)\\b",
+    "foldingStopMarker": "^(endef|endif)\\b"
+  }
+}

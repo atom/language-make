@@ -1,0 +1,15 @@
+{
+  "autoScrollOutput": true,
+  "beforeRunningCommand": "saveModifiedFiles",
+  "command": "#!/System/Library/Frameworks/Ruby.framework/Versions/1.8/usr/bin/ruby\n\nrequire ENV[\"TM_BUNDLE_SUPPORT\"] + '/lib/make.rb'\n\nrequire ENV[\"TM_SUPPORT_PATH\"] + \"/lib/ui\"\nrequire ENV[\"TM_SUPPORT_PATH\"] + \"/lib/exit_codes\"\nrequire ENV[\"TM_SUPPORT_PATH\"] + \"/lib/escape\"\n\nmakefile = find_makefile_path\nTextMate::exit_show_tool_tip \"No Makefile found.\\n\\nSet TM_MAKE_FILE in Preferences → Variable.\" if makefile.nil?\ntargets = `#{TM_MAKE} -f#{e_sh makefile} -np|grep -B1 PHONY|grep -Ev '^(#|--|\\\\.)'|grep -Eo '^[^:]+'|sort -fu`.split.collect{|t| {\"title\" => t} }\nTextMate::exit_show_tool_tip \"No root targets found in ‘#{makefile}’.\\n\\nOnly targets declarated as “phony”\\nare considered to be root targets.\" if targets.empty?\nselection = TextMate::UI.menu(targets)\n\nTextMate::exit_discard if selection == nil\n\nperform_make(selection['title'])\n",
+  "input": "document",
+  "inputFormat": "text",
+  "keyEquivalent": "~@b",
+  "name": "Build Target…",
+  "outputCaret": "afterOutput",
+  "outputFormat": "html",
+  "outputLocation": "newWindow",
+  "scope": "attr.project.make",
+  "semanticClass": "process.alternate.build.target.make",
+  "version": 2
+}

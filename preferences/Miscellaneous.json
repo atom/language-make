@@ -1,0 +1,12 @@
+{
+  "name": "Miscellaneous",
+  "scope": "source.makefile",
+  "settings": {
+    "shellVariables": [
+      {
+        "name": "TM_COMMENT_START",
+        "value": "# "
+      }
+    ]
+  }
+}
