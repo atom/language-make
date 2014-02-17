@@ -1,5 +1,5 @@
 {
-  "source.antlr": {
+  ".source.antlr": {
     "editor": {
       "foldEndPattern": "^(endef|endif)\\b"
     }
