@@ -1,0 +1,7 @@
+{
+  "source.makefile": {
+    "editor": {
+      "commentStart": "# "
+    }
+  }
+}

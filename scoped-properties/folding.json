@@ -1,0 +1,7 @@
+{
+  "source.antlr": {
+    "editor": {
+      "foldEndPattern": "^(endef|endif)\\b"
+    }
+  }
+}

@@ -1,9 +1,0 @@
-{
-  "name": "Indentation",
-  "scope": "source.makefile",
-  "settings": {
-    "disableIndentCorrections": "1",
-    "increaseIndentPattern": "^[^\\t ]+:",
-    "indentOnPaste": "simple"
-  }
-}
