@@ -11,6 +11,7 @@
     "type": "git",
     "url": "https://github.com/atom/language-make.git"
   },
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/atom/language-make/issues"
   }
