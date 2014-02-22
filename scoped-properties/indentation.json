@@ -1,7 +1,0 @@
-{
-  ".source.makefile": {
-    "editor": {
-      "increaseIndentPattern": "^[^\\t ]+:"
-    }
-  }
-}
