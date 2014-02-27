@@ -3,6 +3,7 @@
   'makefile'
   'GNUmakefile'
   'OCamlMakefile'
+  'mk'
 ]
 'name': 'Makefile'
 'patterns': [
