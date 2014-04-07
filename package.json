@@ -1,7 +1,7 @@
 {
   "name": "language-make",
   "version": "0.9.0",
-  "description": "Make langauge support in Atom",
+  "description": "Make language support in Atom",
   "engines": {
     "atom": "*",
     "node": "*"
