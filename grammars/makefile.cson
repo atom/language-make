@@ -1,3 +1,5 @@
+'scopeName': 'source.makefile'
+'name': 'Makefile'
 'fileTypes': [
   'Makefile'
   'makefile'
@@ -5,7 +7,6 @@
   'OCamlMakefile'
   'mk'
 ]
-'name': 'Makefile'
 'patterns': [
   {
     'include': '#comment'
@@ -414,4 +415,3 @@
         ]
       }
     ]
-'scopeName': 'source.makefile'
