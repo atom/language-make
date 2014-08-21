@@ -361,6 +361,10 @@
         'name': 'variable.language.makefile'
       }
       {
+        'match': '\\b@\\w+@\\b'
+        'name': 'string.interpolated.makefile'
+      }
+      {
         'begin': '\\$?\\$\\('
         'captures':
           '0':
