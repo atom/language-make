@@ -6,6 +6,7 @@
   'GNUmakefile'
   'OCamlMakefile'
   'mk'
+  'Makefile.in'
 ]
 'patterns': [
   {
