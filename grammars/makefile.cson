@@ -5,6 +5,7 @@
   'makefile'
   'GNUmakefile'
   'OCamlMakefile'
+  'mf'
   'mk'
   'Makefile.in'
 ]
