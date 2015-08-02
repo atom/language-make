@@ -253,7 +253,7 @@
       }
     ]
   'recipe':
-    'begin': '^(?!\\t)([^:]*)(:)(?!\\=)'
+    'begin': '^([^:]*)(:)(?!\\=)'
     'beginCaptures':
       '1':
         'patterns': [
