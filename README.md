@@ -1,4 +1,4 @@
-# Make language support in Atom
+# Make language support in Atom [![Build Status](https://travis-ci.org/atom/language-make.svg?branch=master)](https://travis-ci.org/atom/language-make)
 
 Adds syntax highlighting to [Makefiles](http://www.gnu.org/software/make/manual/make.html)
 in Atom.
