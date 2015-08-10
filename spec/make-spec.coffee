@@ -17,3 +17,12 @@ describe "Makefile grammar", ->
 
     expect(lines[0][0]).toEqual value: 'all', scopes: ['source.makefile', 'meta.scope.target.makefile', 'entity.name.function.target.makefile']
     expect(lines[3][0]).toEqual value: 'clean', scopes: ['source.makefile', 'meta.scope.target.makefile', 'entity.name.function.target.makefile']
+
+  it "parses function calls", ->
+    {tokens} = grammar.tokenizeLine 'foo: echo $(basename /foo/bar.txt)'
+    expect(tokens[4]).toEqual value: 'basename', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.prerequisites.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'support.function.basename.makefile']
+
+  it "parses targets with line breaks in body", ->
+    lines = grammar.tokenizeLines "foo:\n\techo $(basename /foo/bar.txt)"
+
+    expect(lines[1][3]).toEqual value: 'basename', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'support.function.basename.makefile']
