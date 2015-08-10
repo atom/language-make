@@ -304,6 +304,23 @@
           }
         ]
       }
+      {
+        'begin': '^\\t'
+        'end': '$'
+        'name': 'meta.scope.recipe.makefile'
+        'patterns': [
+          {
+            'match': '\\\\\\n'
+            'name': 'constant.character.escape.continuation.makefile'
+          }
+          {
+            'include': '#variables'
+          }
+          {
+            'include': 'source.shell'
+          }
+        ]
+      }
     ]
   'variable-assignment':
     'begin': '(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)'
