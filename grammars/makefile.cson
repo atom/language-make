@@ -9,6 +9,7 @@
   'mk'
   'Makefile.in'
 ]
+'firstLineMatch': '^#!\\s*/.*\\bmake\\s+-f'
 'patterns': [
   {
     'include': '#comment'

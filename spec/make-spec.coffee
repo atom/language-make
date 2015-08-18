@@ -26,3 +26,6 @@ describe "Makefile grammar", ->
     lines = grammar.tokenizeLines 'foo:\n\techo $(basename /foo/bar.txt)'
 
     expect(lines[1][3]).toEqual value: 'basename', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'support.function.basename.makefile']
+
+  it "selects the Makefile grammar for files that start with a hashbang make -f command", ->
+    expect(atom.grammars.selectGrammar('', '#!/usr/bin/make -f')).toBe grammar
