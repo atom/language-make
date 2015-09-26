@@ -368,6 +368,9 @@
         'name': 'string.interpolated.makefile'
         'patterns': [
           {
+            'include': 'source.shell#string'
+          }
+          {
             'include': '#variables'
           }
           {
@@ -386,6 +389,9 @@
                 'include': '#variables'
               }
               {
+                'include': 'source.shell#string'
+              }
+              {
                 'match': '%|\\*'
                 'name': 'constant.other.placeholder.makefile'
               }
@@ -400,6 +406,9 @@
               {
                 'include': '#variables'
               }
+              {
+                'include': 'source.shell#string'
+              }
             ]
           }
           {
@@ -409,6 +418,9 @@
             'patterns': [
               {
                 'include': '#variables'
+              }
+              {
+                'include': 'source.shell#string'
               }
             ]
           }

@@ -27,5 +27,24 @@ describe "Makefile grammar", ->
 
     expect(lines[1][3]).toEqual value: 'basename', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'support.function.basename.makefile']
 
+  it "parses nested interpolated strings and function calls correctly", ->
+    waitsForPromise ->
+      atom.packages.activatePackage("language-shellscript")
+
+    runs ->
+      lines = grammar.tokenizeLines 'default:\n\t$(eval MESSAGE=$(shell node -pe "decodeURIComponent(process.argv.pop())" "${MSG}"))'
+
+      expect(lines[1][1]).toEqual value: '$(', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'punctuation.definition.variable.makefile']
+      expect(lines[1][2]).toEqual value: 'eval', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'support.function.eval.makefile']
+      expect(lines[1][5]).toEqual value: '$(', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'string.interpolated.makefile', 'punctuation.definition.variable.makefile']
+      expect(lines[1][6]).toEqual value: 'shell', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'support.function.shell.makefile']
+      expect(lines[1][9]).toEqual value: '"', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'string.quoted.double.shell', 'punctuation.definition.string.begin.shell']
+      expect(lines[1][10]).toEqual value: 'decodeURIComponent(process.argv.pop())', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'string.quoted.double.shell']
+      expect(lines[1][11]).toEqual value: '"', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'string.quoted.double.shell', 'punctuation.definition.string.end.shell']
+      expect(lines[1][14]).toEqual value: '${', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'string.quoted.double.shell', 'variable.other.bracket.shell', 'punctuation.definition.variable.shell']
+      expect(lines[1][16]).toEqual value: '}', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'string.quoted.double.shell', 'variable.other.bracket.shell', 'punctuation.definition.variable.shell']
+      expect(lines[1][18]).toEqual value: ')', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'string.interpolated.makefile', 'punctuation.definition.variable.makefile']
+      expect(lines[1][19]).toEqual value: ')', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'punctuation.definition.variable.makefile']
+
   it "selects the Makefile grammar for files that start with a hashbang make -f command", ->
     expect(atom.grammars.selectGrammar('', '#!/usr/bin/make -f')).toBe grammar
