@@ -1,8 +1,5 @@
-{createMakeGrammar} = require '../src/makefile.coffee'
-
 tokenizeLines = (grammar, args...) ->
   lines = grammar.tokenizeLines args...
-
   console.log "lines", lines
   return lines
 
@@ -10,8 +7,10 @@ describe "Makefile grammar", ->
   grammar = null
 
   beforeEach ->
-    waitsForPromise ->
-      createMakeGrammar()
+    # travis does not like this
+    # waitsForPromise ->
+    #   {createMakeGrammar} = require '../src/makefile.coffee'
+    #   createMakeGrammar()
 
     waitsForPromise ->
       atom.packages.activatePackage("language-make")
