@@ -11,7 +11,6 @@ describe "Makefile grammar", ->
 
   beforeEach ->
     waitsForPromise ->
-      debugger
       createMakeGrammar()
 
     waitsForPromise ->
