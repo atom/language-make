@@ -16,6 +16,10 @@
     "url": "https://github.com/atom/language-make/issues"
   },
   "devDependencies": {
-    "coffeelint": "^1.10.1"
+    "coffeelint": "^1.10.1",
+    "atom-syntax-tools": "^0.9.1",
+    "q": "^1.4.1"
+  },
+  "dependencies": {
   }
 }

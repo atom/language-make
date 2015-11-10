@@ -1,7 +1,17 @@
+tokenizeLines = (grammar, args...) ->
+  lines = grammar.tokenizeLines args...
+  console.log "lines", lines
+  return lines
+
 describe "Makefile grammar", ->
   grammar = null
 
   beforeEach ->
+    # travis does not like this
+    # waitsForPromise ->
+    #   {createMakeGrammar} = require '../src/makefile.coffee'
+    #   createMakeGrammar()
+
     waitsForPromise ->
       atom.packages.activatePackage("language-make")
 
@@ -16,7 +26,7 @@ describe "Makefile grammar", ->
     expect(atom.grammars.selectGrammar('', '#!/usr/bin/make -f')).toBe grammar
 
   it "parses recipes", ->
-    lines = grammar.tokenizeLines 'all: foo.bar\n\ttest\n\nclean: foo\n\trm -fr foo.bar'
+    lines = tokenizeLines grammar, 'all: foo.bar\n\ttest\n\nclean: foo\n\trm -fr foo.bar'
 
     expect(lines[0][0]).toEqual value: 'all', scopes: ['source.makefile', 'meta.scope.target.makefile', 'entity.name.function.target.makefile']
     expect(lines[3][0]).toEqual value: 'clean', scopes: ['source.makefile', 'meta.scope.target.makefile', 'entity.name.function.target.makefile']
@@ -26,7 +36,7 @@ describe "Makefile grammar", ->
     expect(tokens[4]).toEqual value: 'basename', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.prerequisites.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'support.function.basename.makefile']
 
   it "parses targets with line breaks in body", ->
-    lines = grammar.tokenizeLines 'foo:\n\techo $(basename /foo/bar.txt)'
+    lines = tokenizeLines grammar, 'foo:\n\techo $(basename /foo/bar.txt)'
 
     expect(lines[1][3]).toEqual value: 'basename', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'support.function.basename.makefile']
 
@@ -35,7 +45,7 @@ describe "Makefile grammar", ->
       atom.packages.activatePackage("language-shellscript")
 
     runs ->
-      lines = grammar.tokenizeLines 'default:\n\t$(eval MESSAGE=$(shell node -pe "decodeURIComponent(process.argv.pop())" "${MSG}"))'
+      lines = tokenizeLines grammar, 'default:\n\t$(eval MESSAGE=$(shell node -pe "decodeURIComponent(process.argv.pop())" "${MSG}"))'
 
       expect(lines[1][1]).toEqual value: '$(', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'punctuation.definition.variable.makefile']
       expect(lines[1][2]).toEqual value: 'eval', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'support.function.eval.makefile']
