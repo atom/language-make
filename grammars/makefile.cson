@@ -286,7 +286,7 @@
     'patterns': [
       {
         'begin': '\\G'
-        'end': '^'
+        'end': '\\n'
         'name': 'meta.scope.prerequisites.makefile'
         'patterns': [
           {
