@@ -18,6 +18,9 @@
     'include': '#variable-assignment'
   }
   {
+    'include': '#variables'
+  }
+  {
     'include': '#recipe'
   }
   {
