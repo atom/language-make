@@ -173,6 +173,11 @@ describe "Makefile grammar", ->
       expect(lines[1][18]).toEqual value: ')', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'string.interpolated.makefile', 'punctuation.definition.variable.makefile']
       expect(lines[1][19]).toEqual value: ')', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'punctuation.definition.variable.makefile']
 
+  it "recognizes global functions", ->
+    {tokens} = grammar.tokenizeLine '$(foreach util,$(EXES),$(eval $(call BUILD_EXE,$(util))))'
+
+    expect(tokens[0]).toEqual value: '$(', scopes: ['source.makefile', 'string.interpolated.makefile', 'punctuation.definition.variable.makefile']
+
   it "parses `origin` correctly", ->
     waitsForPromise ->
       atom.packages.activatePackage("language-shellscript")
