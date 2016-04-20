@@ -143,6 +143,17 @@ describe "Makefile grammar", ->
 
     expect(lines[1][3]).toEqual value: 'basename', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'support.function.basename.makefile']
 
+  it "continues matching prerequisites after reaching a line continuation character", ->
+    waitsForPromise ->
+      atom.packages.activatePackage("language-shellscript")
+
+    runs ->
+      lines = grammar.tokenizeLines 'hello: a b c \\\n d e f\n\techo "test"'
+
+      expect(lines[0][3]).toEqual value: '\\', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.prerequisites.makefile', 'constant.character.escape.continuation.makefile']
+      expect(lines[1][0]).toEqual value: ' d e f', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.prerequisites.makefile']
+      expect(lines[2][1]).toEqual value: 'echo', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'support.function.builtin.shell']
+
   it "parses nested interpolated strings and function calls correctly", ->
     waitsForPromise ->
       atom.packages.activatePackage("language-shellscript")
