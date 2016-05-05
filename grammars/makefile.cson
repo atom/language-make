@@ -3,8 +3,10 @@
 'fileTypes': [
   'Makefile'
   'makefile'
+  'BSDmakefile'
   'GNUmakefile'
   'OCamlMakefile'
+  'Kbuild'
   'mf'
   'mk'
   'mkfile'
