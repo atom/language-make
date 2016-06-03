@@ -11,6 +11,7 @@
   'mk'
   'mkfile'
   'Makefile.in'
+  'imk'
 ]
 'firstLineMatch': '^#!\\s*/.*\\bmake\\s+-f'
 'patterns': [
