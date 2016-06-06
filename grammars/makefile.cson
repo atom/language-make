@@ -359,7 +359,7 @@
         'captures':
           '1':
             'name': 'punctuation.definition.variable.makefile'
-        'match': '(\\$?\\$)[@%<?^+*]'
+        'match': '(\\$?\\$)[@%<?^+|*]'
         'name': 'variable.language.makefile'
       }
       {
