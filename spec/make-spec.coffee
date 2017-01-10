@@ -40,10 +40,21 @@ describe "Makefile grammar", ->
     expect(lines[2][0]).toEqual value: 'not a comment', scopes: ['source.makefile']
 
   it "parses recipes", ->
-    lines = grammar.tokenizeLines 'all: foo.bar\n\ttest\n\nclean: foo\n\trm -fr foo.bar'
+    waitsForPromise ->
+      atom.packages.activatePackage("language-shellscript")
 
-    expect(lines[0][0]).toEqual value: 'all', scopes: ['source.makefile', 'meta.scope.target.makefile', 'entity.name.function.target.makefile']
-    expect(lines[3][0]).toEqual value: 'clean', scopes: ['source.makefile', 'meta.scope.target.makefile', 'entity.name.function.target.makefile']
+    runs ->
+      lines = grammar.tokenizeLines 'all: foo.bar\n\ttest\n\nclean: foo\n\trm -fr foo.bar'
+      expect(lines[0][0]).toEqual value: 'all', scopes: ['source.makefile', 'meta.scope.target.makefile', 'entity.name.function.target.makefile']
+      expect(lines[3][0]).toEqual value: 'clean', scopes: ['source.makefile', 'meta.scope.target.makefile', 'entity.name.function.target.makefile']
+
+      lines = grammar.tokenizeLines 'help: # Show this help\n\t@command grep --extended-regexp \'^[a-zA-Z_-]+:.*?# .*$$\' $(MAKEFILE_LIST) | sort | awk \'BEGIN {FS = ":.*?# "}; {printf "\\033[1;39m%-15s\\033[0;39m %s\\n", $$1, $$2}\''
+      expect(lines[0][0]).toEqual value: 'help', scopes: ['source.makefile', 'meta.scope.target.makefile', 'entity.name.function.target.makefile']
+      expect(lines[0][1]).toEqual value: ':', scopes: ['source.makefile', 'meta.scope.target.makefile', 'punctuation.separator.key-value.makefile']
+      expect(lines[0][3]).toEqual value: '#', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.prerequisites.makefile', 'comment.line.number-sign.makefile', 'punctuation.definition.comment.makefile']
+      expect(lines[1][0]).toEqual value: '\t', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile']
+      expect(lines[1][1]).toEqual value: '@command grep --extended-regexp ', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile']
+      expect(lines[1][2]).toEqual value: '\'', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.quoted.single.shell', 'punctuation.definition.string.begin.shell']
 
   testFunctionCall = (functionName) ->
     {tokens} = grammar.tokenizeLine 'foo: echo $(' + functionName + ' /foo/bar.txt)'
