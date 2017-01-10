@@ -251,5 +251,6 @@ describe "Makefile grammar", ->
     expect(lines[1][0]).toEqual value: 'OTHERVAR', scopes: ['source.makefile', 'variable.other.makefile']
 
   it "tokenizes a leading @ in recipes", ->
-    lines = grammar.tokenizeLines 'target:\n\t@command'
+    lines = grammar.tokenizeLines 'target:\n\t@comm@and @nope'
     expect(lines[1][1]).toEqual value: '@', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'keyword.other.no-echo.makefile']
+    expect(lines[1][2]).toEqual value: 'comm@and @nope', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile']
