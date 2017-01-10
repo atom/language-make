@@ -1,3 +1,7 @@
+# NOTE: This spec file doesn't use Coffeescript extended quotes (""")
+# because Make does not support spaces for indentation (which this spec file is using)
+# So we have to settle with \n\t single-line notation
+
 describe "Makefile grammar", ->
   grammar = null
 
@@ -27,6 +31,12 @@ describe "Makefile grammar", ->
     expect(lines[2][1]).toEqual value: 'foo', scopes: ['source.makefile', 'comment.line.number-sign.makefile']
     expect(lines[2][2]).toEqual value: '\\', scopes: ['source.makefile', 'comment.line.number-sign.makefile', 'constant.character.escape.continuation.makefile']
     expect(lines[3][0]).toEqual value: 'bar', scopes: ['source.makefile', 'comment.line.number-sign.makefile']
+
+    lines = grammar.tokenizeLines '# comment \\\nshould still be a comment'
+    expect(lines[0][0]).toEqual value: '#', scopes: ['source.makefile', 'comment.line.number-sign.makefile', 'punctuation.definition.comment.makefile']
+    expect(lines[0][1]).toEqual value: ' comment ', scopes: ['source.makefile', 'comment.line.number-sign.makefile']
+    expect(lines[0][2]).toEqual value: '\\', scopes: ['source.makefile', 'comment.line.number-sign.makefile', 'constant.character.escape.continuation.makefile']
+    expect(lines[1][0]).toEqual value: 'should still be a comment', scopes: ['source.makefile', 'comment.line.number-sign.makefile']
 
   it "parses recipes", ->
     lines = grammar.tokenizeLines 'all: foo.bar\n\ttest\n\nclean: foo\n\trm -fr foo.bar'
@@ -201,3 +211,28 @@ describe "Makefile grammar", ->
       expect(lines[1][2]).toEqual value: 'flavor', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'support.function.flavor.makefile']
       expect(lines[1][4]).toEqual value: '1', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'meta.scope.function-call.makefile', 'variable.other.makefile']
       expect(lines[1][5]).toEqual value: ')', scopes: ['source.makefile', 'meta.scope.target.makefile', 'meta.scope.recipe.makefile', 'string.interpolated.makefile', 'punctuation.definition.variable.makefile']
+
+  it "tokenizes variable assignments", ->
+    operators = ['=', '?=', ':=', '+=']
+    for operator in operators
+      {tokens} = grammar.tokenizeLine "SOMEVAR #{operator} whatever"
+      expect(tokens[0]).toEqual value: 'SOMEVAR', scopes: ['source.makefile', 'variable.other.makefile']
+      expect(tokens[1]).toEqual value: ' ', scopes: ['source.makefile']
+      expect(tokens[2]).toEqual value: operator, scopes: ['source.makefile', 'keyword.operator.assignment.makefile']
+      expect(tokens[3]).toEqual value: ' whatever', scopes: ['source.makefile']
+
+    {tokens} = grammar.tokenizeLine '`$om3_V@R! := whatever'
+    expect(tokens[0]).toEqual value: '`$om3_V@R!', scopes: ['source.makefile', 'variable.other.makefile']
+    expect(tokens[1]).toEqual value: ' ', scopes: ['source.makefile']
+    expect(tokens[2]).toEqual value: ':=', scopes: ['source.makefile', 'keyword.operator.assignment.makefile']
+    expect(tokens[3]).toEqual value: ' whatever', scopes: ['source.makefile']
+
+    lines = grammar.tokenizeLines 'SOMEVAR = OTHER\\\nVAR'
+    expect(lines[0][0]).toEqual value: 'SOMEVAR', scopes: ['source.makefile', 'variable.other.makefile']
+    expect(lines[0][3]).toEqual value: ' OTHER', scopes: ['source.makefile']
+    expect(lines[0][4]).toEqual value: '\\', scopes: ['source.makefile', 'constant.character.escape.continuation.makefile']
+
+    lines = grammar.tokenizeLines 'SOMEVAR := foo # bar explanation\nOTHERVAR := bar'
+    expect(lines[0][0]).toEqual value: 'SOMEVAR', scopes: ['source.makefile', 'variable.other.makefile']
+    expect(lines[0][4]).toEqual value: '#', scopes: ['source.makefile', 'comment.line.number-sign.makefile', 'punctuation.definition.comment.makefile']
+    expect(lines[1][0]).toEqual value: 'OTHERVAR', scopes: ['source.makefile', 'variable.other.makefile']
