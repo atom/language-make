@@ -32,11 +32,12 @@ describe "Makefile grammar", ->
     expect(lines[2][2]).toEqual value: '\\', scopes: ['source.makefile', 'comment.line.number-sign.makefile', 'constant.character.escape.continuation.makefile']
     expect(lines[3][0]).toEqual value: 'bar', scopes: ['source.makefile', 'comment.line.number-sign.makefile']
 
-    lines = grammar.tokenizeLines '# comment \\\nshould still be a comment'
+    lines = grammar.tokenizeLines '# comment\\\nshould still be a comment\nnot a comment'
     expect(lines[0][0]).toEqual value: '#', scopes: ['source.makefile', 'comment.line.number-sign.makefile', 'punctuation.definition.comment.makefile']
-    expect(lines[0][1]).toEqual value: ' comment ', scopes: ['source.makefile', 'comment.line.number-sign.makefile']
+    expect(lines[0][1]).toEqual value: ' comment', scopes: ['source.makefile', 'comment.line.number-sign.makefile']
     expect(lines[0][2]).toEqual value: '\\', scopes: ['source.makefile', 'comment.line.number-sign.makefile', 'constant.character.escape.continuation.makefile']
     expect(lines[1][0]).toEqual value: 'should still be a comment', scopes: ['source.makefile', 'comment.line.number-sign.makefile']
+    expect(lines[2][0]).toEqual value: 'not a comment', scopes: ['source.makefile']
 
   it "parses recipes", ->
     lines = grammar.tokenizeLines 'all: foo.bar\n\ttest\n\nclean: foo\n\trm -fr foo.bar'
