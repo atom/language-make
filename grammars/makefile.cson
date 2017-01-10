@@ -48,7 +48,7 @@
         'beginCaptures':
           '0':
             'name': 'punctuation.definition.comment.makefile'
-        'end': '\\n'
+        'end': '(?=\\n)'
         'name': 'comment.line.number-sign.makefile'
         'patterns': [
           {
@@ -335,12 +335,14 @@
       }
     ]
   'variable-assignment':
-    'begin': '(^[ ]*|\\G\\s*)([^\\s]+)\\s*(=|\\?=|:=|\\+=)'
+    # "A variable name may be any sequence of characters not containing `:', `#', `=', or whitespace"
+    # - https://www.gnu.org/software/make/manual/html_node/Using-Variables.html
+    'begin': '(^[ ]*|\\G\\s*)([^\\s:#=]+)\\s*(=|\\?=|:=|\\+=)'
     'beginCaptures':
       '2':
         'name': 'variable.other.makefile'
       '3':
-        'name': 'punctuation.separator.key-value.makefile'
+        'name': 'keyword.operator.assignment.makefile'
     'end': '\\n'
     'patterns': [
       {
