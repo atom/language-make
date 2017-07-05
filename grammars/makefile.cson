@@ -403,9 +403,6 @@
                 'include': '#variables'
               }
               {
-                'include': 'source.shell#string'
-              }
-              {
                 'match': '%|\\*'
                 'name': 'constant.other.placeholder.makefile'
               }
