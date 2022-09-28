@@ -1,4 +1,5 @@
-# Make language support in Atom
+##### Atom and all repositories under Atom will be archived on December 15, 2022. Learn more in our [official announcement](https://github.blog/2022-06-08-sunsetting-atom/)
+ # Make language support in Atom
 [![macOS Build Status](https://travis-ci.org/atom/language-make.svg?branch=master)](https://travis-ci.org/atom/language-make)
 [![Windows Build Status](https://ci.appveyor.com/api/projects/status/vq1aascey21wxjh7/branch/master?svg=true)](https://ci.appveyor.com/project/Atom/language-make/branch/master)
 [![Dependency Status](https://david-dm.org/atom/language-make.svg)](https://david-dm.org/atom/language-make)
