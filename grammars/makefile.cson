@@ -327,6 +327,13 @@
             'name': 'constant.character.escape.continuation.makefile'
           }
           {
+            # https://www.gnu.org/software/make/manual/html_node/Echoing.html
+            'match': '(?<=^\\t)\\t*(@)'
+            'captures':
+              '1':
+                'name': 'keyword.other.no-echo.makefile'
+          }
+          {
             'include': '#variables'
           }
           {
